@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="nav_home">Anasayfa</string>
+    <string name="nav_mydog">Evcil Hayvanim</string>
+    <string name="nav_myvet">Veterinerim</string>
+    <string name="nav_lost">KAYIP (Evcil Hayvanimi Bul)</string>
+    <string name="nav_adopt">Evcil Hayvan Edinin</string>
+    <string name="nav_logout">Cikis</string>
+    <string name="nav_settings">Ayarlar</string>
+    <string name="nav_wophome">Pati Dunyasi (WoP)</string>
+    <string name="nav_info_contact">Bize Ulasin</string>
+    <string name="Language">Secili Dil</string>
+</resources>
