@@ -40,6 +40,10 @@ public class Home extends AppCompatActivity {
                 int id= menuItem.getItemId();
 
                 switch (id){
+                    case R.id.mypet:
+                        intent=new Intent(Home.this,MyPet.class);
+                        startActivity(intent);
+                        break;
                     case R.id.settings:
                         intent=new Intent(Home.this,Settings.class);
                         startActivity(intent);
@@ -47,6 +51,7 @@ public class Home extends AppCompatActivity {
                     case R.id.wophome:
                         intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://worldofpaw.com"));
                         startActivity(intent);
+                        break;
                 }
                 return false;
             }

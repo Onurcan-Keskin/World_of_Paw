@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -97,6 +98,10 @@ public class Settings extends AppCompatActivity {
                         intent=new Intent(Settings.this,Home.class);
                         startActivity(intent);
                         break;
+                    case R.id.mypet:
+                        intent=new Intent(Settings.this,MyPet.class);
+                        startActivity(intent);
+                        break;
                     case R.id.wophome:
                         intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://worldofpaw.com"));
                         startActivity(intent);
@@ -131,6 +136,15 @@ public class Settings extends AppCompatActivity {
         finish();
         System.exit(0);
     }*/
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK)
+            Toast.makeText(getApplicationContext(),"Back button is disabled on this page.",Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Geri tuşu bu sayfada devre dışıdır.", Toast.LENGTH_LONG).show();
+        return false;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

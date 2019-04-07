@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/colorPrimary">
+
+    <Button
+        android:onClick="btnChoosePathClicked"
+        android:id="@+id/btnChoosePath"
+        android:background="@color/deepPurple1"
+        android:textColor="@color/deepPurple5"
+        android:layout_centerHorizontal="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="20dp"
+        android:width="200dp"
+        android:text="@string/choose_gallery"/>
+
+    <Button
+        android:onClick="btnTakePhotoClicked"
+        android:id="@+id/btnTakePhoto"
+        android:background="@color/deepPurple2"
+        android:textColor="@color/deepPurple5"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/btnChoosePath"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:width="200dp"
+        android:text="@string/choose_camera"/>
+</RelativeLayout>

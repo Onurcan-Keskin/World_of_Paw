@@ -3,4 +3,16 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="deepPurple1">#311B92</color>
+    <color name="deepPurple2">#512DA8</color>
+    <color name="deepPurple3">#673AB7</color>
+    <color name="deepPurple4">#9575CD</color>
+    <color name="deepPurple5">#D1C4E9</color>
+    <color name="black">#000</color>
+    <color name="white">#fff</color>
+
+    <!-- Buttons -->
+    <color name="btnSignUp">#39796b</color>
+    <color name="btnSignActive">#a9d440</color>
 </resources>

@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "191962281717",
+    "firebase_url": "https://world-of-paw.firebaseio.com",
+    "project_id": "world-of-paw",
+    "storage_bucket": "world-of-paw.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:191962281717:android:af9cb28839ae2aa9",
+        "android_client_info": {
+          "package_name": "com.example.wop"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "191962281717-pfv80j6hli6dvf5usss70qert7ajjtrg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.wop",
+            "certificate_hash": "9a64bfe2123f17d9e2cf4ef9cc4322c985d46a45"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBGcu82RvROEitlrwGCRrvMHhC1WwSJ2SY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "191962281717-qnrhonn81j12j8b7er5bm9e28h7ohmu1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
