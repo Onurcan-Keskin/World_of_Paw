@@ -3,6 +3,7 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.wop">
+
     <!-- To auto-complete the email text field in the login form with the user's emails -->
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.READ_PROFILE" />
@@ -11,6 +12,14 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <uses-feature
+        android:name="android.hardware.bluetooth_le"
+        android:required="true" />
 
     <dist:module dist:instant="true" />
 
@@ -22,28 +31,25 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".ProfileAct"
-            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
-        </activity>
+        <activity android:name=".BLE"/>
+        <activity android:name=".Create_Pet"/>
         <activity
-            android:name=".SignUp" />
+            android:name=".SplashScreen"
+            android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
+        <activity android:name=".ProfileAct" />
+        <activity android:name=".SignUp" />
         <activity android:name=".LangSelector" />
-
-        <activity
-            android:name=".Loginn">
+        <activity android:name=".Loginn">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Intro"/>
+        <activity android:name=".Intro" />
         <activity android:name=".MyPet" />
         <activity android:name=".Settings" />
-
-        <activity android:name=".Home"/>
-
+        <activity android:name=".Home" />
     </application>
 
 </manifest>

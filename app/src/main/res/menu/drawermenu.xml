@@ -51,4 +51,11 @@
         </menu>
     </item>
 
+    <group android:checkableBehavior="single"
+        android:id="@+id/gr6">
+        <item android:title="@string/nav_logout"
+            android:id="@+id/logout"/>
+    </group>
+
+
 </menu>

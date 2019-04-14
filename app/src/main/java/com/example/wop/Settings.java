@@ -105,6 +105,10 @@ public class Settings extends AppCompatActivity {
                     case R.id.wophome:
                         intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://worldofpaw.com"));
                         startActivity(intent);
+                    case R.id.logout:
+                        intent=new Intent(Settings.this,Loginn.class);
+                        startActivity(intent);
+                        break;
                 }
                 return false;
             }
@@ -141,8 +145,7 @@ public class Settings extends AppCompatActivity {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode==KeyEvent.KEYCODE_BACK)
-            Toast.makeText(getApplicationContext(),"Back button is disabled on this page.",Toast.LENGTH_LONG).show();
-            Toast.makeText(getApplicationContext(), "Geri tuşu bu sayfada devre dışıdır.", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(),R.string.error_back_button,Toast.LENGTH_SHORT).show();
         return false;
     }
 

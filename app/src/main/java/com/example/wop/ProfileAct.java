@@ -96,7 +96,7 @@ public class ProfileAct extends AppCompatActivity {
             }
 
             if (user.getDisplayName() != null) {
-                editText.setText(R.string.action_verified);
+                editText.setText(R.string.action_verify);
             } else {
                 textView.setText(R.string.error_verification);
                 textView.setOnClickListener(new View.OnClickListener() {
@@ -197,7 +197,7 @@ public class ProfileAct extends AppCompatActivity {
             case R.id.menuLogout:
                 FirebaseAuth.getInstance().signOut();
                 finish();
-                startActivity(new Intent(this,Home.class));
+                startActivity(new Intent(this,Loginn.class));
                 break;
         }
         return true;

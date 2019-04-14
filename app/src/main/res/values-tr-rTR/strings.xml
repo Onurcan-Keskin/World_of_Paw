@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="app_name">Pati Dünyasi</string>
     <string name="nav_home">Anasayfa</string>
     <string name="nav_mydog">Evcil Hayvanim</string>
     <string name="nav_myvet">Veterinerim</string>
@@ -7,7 +8,7 @@
     <string name="nav_adopt">Evcil Hayvan Edinin</string>
     <string name="nav_logout">Cikis</string>
     <string name="nav_settings">Ayarlar</string>
-    <string name="nav_wophome">Pati Dunyasi (WoP)</string>
+    <string name="nav_wophome">Pati Dunyasi</string>
     <string name="nav_info_contact">Bize Ulasin</string>
     <string name="Language">Secili Dil</string>
     <string name="owner">Sahibi</string>
@@ -29,8 +30,8 @@
     <string name="prompt_password">Sifre</string>
     <string name="action_sign_in">Giris Yap veya Kayit Ol</string>
     <string name="action_sign_in_short">Giris Yap</string>
-    <string name="error_invalid_email">Email adresi gecersiz</string>
-    <string name="error_invalid_password">Sifreniz cok kisa</string>
+    <string name="error_invalid_email">Email adresi gecersiz.</string>
+    <string name="error_invalid_password">Sifre uzunlugu en az 6 haneli olmalidir.</string>
     <string name="error_incorrect_password">Sifre yanlis</string>
     <string name="error_field_required">Burasi bos birakilamaz</string>
     <string name="permission_rationale">Emailinizi tamamlamak icin rehber ayricaliklari gereklidir.</string>
@@ -39,11 +40,13 @@
     <string name="action_sign_up_short">Kayit Ol</string>
     <string name="nickname">Kullanici Adi</string>
     <string name="login">Giris</string>
-    <string name="action_tap_on_cam">Profil resmi eklemek icin Kamera\'ya dokunun</string>
+    <string name="action_tap_on_cam">Profil resmi eklemek icin Kamera\'ya dokunun.</string>
     <string name="action_save">Kaydet</string>
     <string name="action_profile_update">Profiliniz kaydedilmistir</string>
-    <string name="action_verified">Dogrulayin</string>
+    <string name="action_verify">Dogrulayin</string>
     <string name="action_verify_sent">Dogrulama Gonderildi</string>
     <string name="error_verification">Email Dogrulanmadi (Dogrulamak icin dokunun)</string>
     <string name="error_already_registered">Zaten kayitlisiniz</string>
+    <string name="error_lang_selected">Dil zaten secilidir</string>
+    <string name="error_back_button">Geri tusu devre disidir</string>
 </resources>

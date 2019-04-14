@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.LoaderManager;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,6 +34,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 public class Loginn extends AppCompatActivity implements View.OnClickListener{
@@ -44,9 +48,14 @@ public class Loginn extends AppCompatActivity implements View.OnClickListener{
     private View mLoginFormView;
      Button btnSignIn;
      Button btnSignUp;
-    private EditText edname;
+     Button btn_tr;
+     Button brn_en;
+
     private EditText edpass;
     private EditText edmail;
+
+    private Locale mylocale;
+    private String currentlang="en", getCurrentlang;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,49 +64,69 @@ public class Loginn extends AppCompatActivity implements View.OnClickListener{
 
         findViewById(R.id.email_sign_in_button).setOnClickListener(this);
         findViewById(R.id.email_sign_up_button).setOnClickListener(this);
-        edname = (EditText) findViewById(R.id.edtname);
         edpass = (EditText) findViewById(R.id.edtpassword);
         edmail = (EditText) findViewById(R.id.edtemail);
 
         progressBar = (ProgressBar) findViewById(R.id.login_progress);
         myAuth = FirebaseAuth.getInstance();
 
-        final FirebaseDatabase database = FirebaseDatabase.getInstance();
-        final DatabaseReference Label_user = database.getReference("User");
-        final DatabaseReference table_user = database.getReference("User");
+        currentlang=getIntent().getStringExtra(currentlang);
+
+        findViewById(R.id.tr_flag).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("tr");
+            }
+        });
+
+        findViewById(R.id.en_flag).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setLocale("en");
+            }
+        });
+    }
+
+    public void setLocale(String localeName){
+        if (!localeName.equals(currentlang)){
+            mylocale = new Locale(localeName);
+            Resources res = getResources();
+            DisplayMetrics dm = res.getDisplayMetrics();
+            Configuration config = res.getConfiguration();
+            config.locale = mylocale;
+            res.updateConfiguration(config,dm);
+            Intent refresh = new Intent(this, Loginn.class);
+            refresh.putExtra(currentlang,localeName);
+            startActivity(refresh);
+        } else {
+            Toast.makeText(Loginn.this,R.string.error_lang_selected,Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void userlogin(){
         String email = edmail.getText().toString().trim();
-        String name = edname.getText().toString().trim();
         String pass = edpass.getText().toString().trim();
 
         if (email.isEmpty()){
-            edmail.setError("Error");
+            edmail.setError(getString(R.string.error_field_required));
             edmail.requestFocus();
             return;
         }
 
         if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()){
-            edmail.setError("Error");
+            edmail.setError(getString(R.string.error_invalid_email));
             edmail.requestFocus();
             return;
         }
 
-        if (name.isEmpty()){
-            edname.setError("NameError");
-            edname.requestFocus();
-            return;
-        }
-
         if (pass.isEmpty()){
-            edpass.setError("PassError");
+            edpass.setError(getString(R.string.error_field_required));
             edpass.requestFocus();
             return;
         }
 
         if (pass.length()<6){
-            edpass.setError("PassLength");
+            edpass.setError(getString(R.string.error_invalid_password));
             edpass.requestFocus();
             return;
         }
@@ -120,13 +149,21 @@ public class Loginn extends AppCompatActivity implements View.OnClickListener{
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK)
+            Toast.makeText(getApplicationContext(),R.string.error_back_button,Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    /*
+    @Override
     protected void onStart() {
         super.onStart();
         if (myAuth.getCurrentUser() != null){
             finish();
             startActivity(new Intent(this,ProfileAct.class));
         }
-    }
+    }*/
 
     @Override
     public void onClick(View v) {
