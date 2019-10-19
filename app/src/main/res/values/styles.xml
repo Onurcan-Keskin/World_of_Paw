@@ -1,11 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
+    <!-- Light Mode Theme -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/icon_blue</item>
+        <item name="colorPrimaryDark">@color/icon_darkblue</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="backgroundcolor">#E8E8E8</item>
+        <item name="card_background">@color/white</item>
+        <item name="textcolor">#808080</item>
+        <item name="tintcolor">#000000</item>
+        <item name="buttontextcolor">@color/icon_blue</item>
+        <item name="buttoncolor">@color/creme</item>
+        <item name="icon_color">@color/icon_blue</item>
+        <item name="drawercolor">@color/icon_darkblue</item>
+        <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <!-- BLE-Theme -->
+    <style name="ble_theme" parent="android:Theme.Holo.Light">
+        <!-- Customize your theme here. -->
+        <item name="android:actionBarStyle">@style/UBLOXActionBar</item>
+        <item name="android:actionBarTabStyle">@style/UBLOXActionBarTabs</item>
+        <item name="android:actionBarTabTextStyle">@style/UBLOXActionBarTabsText</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="UBLOXActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+        <item name="android:background">@color/white</item>
+        <item name="android:backgroundStacked">@color/dcolorPrimary</item>
+    </style>
+
+    <!-- ActionBar tabs styles -->
+    <style name="UBLOXActionBarTabs" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
+        <!-- tab indicator -->
+        <item name="android:background">@drawable/actionbar_tab_indicator</item>
+    </style>
+
+    <style name="UBLOXActionBarTabsText" parent="@android:style/Widget.Holo.Light.ActionBar.TabText">
+        <item name="android:textColor">@color/white</item>
+    </style>
+    <!-- End BLE -->
+
+    <!-- Dark Mode Theme -->
+    <style name="dark_theme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">#E65100</item>
+        <item name="colorPrimaryDark">#090909</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="backgroundcolor">#303030</item>
+        <item name="card_background">#424242</item>
+        <item name="textcolor">@color/white</item>
+        <item name="tintcolor">@color/white</item>
+        <item name="buttontextcolor">@color/white</item>
+        <item name="buttoncolor">#424242</item>
+        <item name="icon_color">@color/white</item>
+        <item name="drawercolor">#212121</item>
+        <item name="android:windowContentTransitions">true</item>
+    </style>
 </resources>

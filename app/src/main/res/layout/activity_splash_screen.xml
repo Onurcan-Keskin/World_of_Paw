@@ -8,9 +8,9 @@
     android:background="@drawable/splash_background">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/wop_logo"
+        android:layout_width="128dp"
+        android:layout_height="128dp"
+        android:background="@mipmap/wop_new"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"/>
 

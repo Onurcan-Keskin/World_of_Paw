@@ -1,49 +1,69 @@
 package com.example.wop.Model;
 
 public class User {
-    private String mUserImageUrl;
-    private String Name;
-    private String Password;
-    private String Email;
+    private String name;
+    private String image;
+    private String status;
+    private String thumb_image;
+    private String email;
+    private String location;
 
     public User(){}
 
-    public User(String mUserImageUrl, String name, String pass, String mail){
-        this.mUserImageUrl=mUserImageUrl;
-        this.Name=name;
-        this.Password=pass;
-        this.Email=mail;
+    public User(String name, String image, String status, String thumb_image, String email, String location) {
+        this.name = name;
+        this.image = image;
+        this.status = status;
+        this.thumb_image = thumb_image;
+        this.email = email;
+        this.location = location;
     }
 
-    public String getmUserImageUrl() {
-        return mUserImageUrl;
+    public String getLocation() {
+        return location;
     }
 
-    public void setmUserImageUrl(String mUserImageUrl) {
-        this.mUserImageUrl = mUserImageUrl;
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
     public void setName(String name) {
-        Name = name;
+        this.name = name;
     }
 
-    public String getPassword() {
-        return Password;
+    public String getImage() {
+        return image;
     }
 
-    public void setPassword(String password) {
-        Password = password;
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getThumb_image() {
+        return thumb_image;
+    }
+
+    public void setThumb_image(String thumb_image) {
+        this.thumb_image = thumb_image;
     }
 
     public String getEmail() {
-        return Email;
+        return email;
     }
 
     public void setEmail(String email) {
-        Email = email;
+        this.email = email;
     }
 }

@@ -1,0 +1,31 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/menu_refresh"
+        android:checkable="false"
+        android:orderInCategory="1"
+        android:showAsAction="always"
+        tools:ignore="MenuTitle" />
+    <item
+        android:id="@+id/menu_scan"
+        android:orderInCategory="100"
+        android:showAsAction="always|withText"
+        android:title="@string/menu_scan" />
+    <item
+        android:id="@+id/menu_stop"
+        android:orderInCategory="101"
+        android:showAsAction="always|withText"
+        android:title="@string/menu_stop" />
+    <item
+        android:id="@+id/menu_remote_control"
+        android:orderInCategory="102"
+        android:showAsAction="always|withText"
+        android:singleLine="false"
+        android:title="Remote" />
+    <item
+        android:id="@+id/menu_about"
+        android:icon="@drawable/info"
+        android:orderInCategory="200"
+        android:showAsAction="always"
+        android:title="About" />
+</menu>

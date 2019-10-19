@@ -1,60 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <group android:checkableBehavior="single"
-        android:id="@+id/gr1">
+    <group
+        android:id="@+id/gr1"
+        android:checkableBehavior="single">
         <item
-            android:title="@string/nav_home"
-            android:id="@+id/home" />
+            android:id="@+id/home"
+            android:icon="@drawable/ic_home_black_24dp"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_home" />
 
         <item
-            android:title="@string/nav_account"
-            android:id="@+id/account"/>
+            android:id="@+id/account"
+            android:icon="@drawable/ic_account_circle_black_24dp"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_account" />
+        <item
+            android:id="@+id/mypet"
+            android:icon="@drawable/logo_wop"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_mydog" />
     </group>
 
-    <group android:checkableBehavior="single"
-        android:id="@+id/gr2">
+    <group
+        android:id="@+id/gr2"
+        android:checkableBehavior="single">
         <item
-            android:title="@string/nav_mydog"
-            android:id="@+id/mypet" />
-        <item
-            android:title="@string/nav_myvet"
-            android:id="@+id/myvet"/>
+            android:id="@+id/message"
+            android:icon="@drawable/ic_message_black_24dp"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_message" />
     </group>
 
-    <group android:checkableBehavior="single"
-        android:id="@+id/gr3">
+    <group
+        android:id="@+id/gr3"
+        android:checkableBehavior="single">
         <item
-            android:title="@string/nav_lost"
-            android:id="@+id/lost"/>
-        <item
-            android:title="@string/nav_adopt"
-            android:id="@+id/adopt"/>
+            android:id="@+id/lost"
+            android:icon="@drawable/lost_icon"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_lost" />
     </group>
 
-    <group android:checkableBehavior="single"
-        android:id="@+id/gr4">
+    <group
+        android:id="@+id/gr4"
+        android:checkableBehavior="single">
         <item
-            android:title="@string/nav_settings"
-            android:id="@+id/settings"/>
+            android:id="@+id/settings"
+            android:icon="@drawable/ic_settings_black_24dp"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_settings" />
     </group>
 
     <item android:title="@string/nav_info_contact">
         <menu>
-            <group android:checkableBehavior="single"
-                android:id="@+id/gr5">
+            <group
+                android:id="@+id/gr5"
+                android:checkableBehavior="single">
                 <item
-                    android:title="@string/nav_wophome"
-                    android:id="@+id/wophome"/>
+                    android:id="@+id/wophome"
+                    android:icon="@drawable/globe_icon"
+                    android:iconTint="?attr/colorPrimary"
+                    android:title="@string/nav_wophome" />
             </group>
         </menu>
     </item>
 
-    <group android:checkableBehavior="single"
-        android:id="@+id/gr6">
-        <item android:title="@string/nav_logout"
-            android:id="@+id/logout"/>
+    <group
+        android:id="@+id/gr6"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/logout"
+            android:icon="@drawable/login_icon"
+            android:iconTint="@color/dcolorPrimary"
+            android:title="@string/nav_logout" />
     </group>
 
 

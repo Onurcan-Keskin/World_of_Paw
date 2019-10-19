@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:background="?attr/backgroundcolor">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="?attr/card_background">
+        <TextView
+            android:text="@string/prompt_change_pet_address"
+            android:layout_width="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            android:textColor="?attr/tintcolor"
+            android:padding="5dp"/>
+        <EditText
+            android:id="@+id/pet_address_box"
+            android:hint="@string/prompt_pet_address"
+            android:layout_marginTop="40dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"
+            android:maxLines="1"
+            android:padding="5dp"
+            android:textColor="?attr/tintcolor"
+            android:background="?attr/card_background"
+            android:textColorHint="?attr/textcolor"
+            android:textStyle="normal"/>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+        <Button
+            android:id="@+id/pet_address_cancel"
+            style="?android:attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="100dp"
+            android:background="?attr/buttoncolor"
+            android:text="@string/prompt_cancel"
+            android:textColor="?attr/buttontextcolor" />
+        <Button
+            android:id="@+id/pet_address_save"
+            style="?android:attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="0dp"
+            android:background="?attr/buttoncolor"
+            android:text="@string/action_save"
+            android:textColor="?attr/buttontextcolor" />
+    </RelativeLayout>
+
+</LinearLayout>

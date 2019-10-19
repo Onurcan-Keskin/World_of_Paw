@@ -2,131 +2,142 @@ package com.example.wop;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
+import de.hdodenhof.circleimageview.CircleImageView;
+import id.zelory.compressor.Compressor;
 
-import android.Manifest;
-import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.MediaStore;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.wop.Model.Pet;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
-import com.karumi.dexter.Dexter;
-import com.karumi.dexter.MultiplePermissionsReport;
-import com.karumi.dexter.PermissionToken;
-import com.karumi.dexter.listener.DexterError;
-import com.karumi.dexter.listener.PermissionRequest;
-import com.karumi.dexter.listener.PermissionRequestErrorListener;
-import com.karumi.dexter.listener.multi.MultiplePermissionsListener;
 import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Create_Pet extends AppCompatActivity {
 
-    private static final int PICK_PET_IMAGE_REQUEST = 1;
-    private static final int TAKE_PET_IMAGE_REQUEST = 2;
-
-    private ArrayList<MyImage> images;
+    private static final int PET_IMAGE_REQUEST = 1;
 
     DrawerLayout gDrawer;
     NavigationView gNavigation;
     ActionBarDrawerToggle gToggle;
     Intent intent;
 
-    Uri mImageUri;
+    Uri mPetImageUri;
 
     Button ButtonSaveRecord;
-    ImageView PetPic;
+    CircleImageView PetPic;
     EditText PetName;
-    EditText PetOwner;
     EditText PetBreed;
     EditText PetAge;
     EditText PetAddress;
-    ProgressBar mProgressBar;
 
+    private FirebaseAuth mAuth;
+    private DatabaseReference mUserRef;
     private StorageReference mStorageRef;
     private StorageTask mUpload;
     private DatabaseReference mDatabaseRef;
+    private FirebaseUser mCurrentUser;
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private ProgressDialog mProgress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
+            setTheme(R.style.dark_theme);
+        } else setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle("Create a Pet");
         setContentView(R.layout.activity_create_pet);
 
-        gDrawer=findViewById(R.id.drawer_pet_upload);
-        gNavigation=findViewById(R.id.nav_view);
-        gToggle=new ActionBarDrawerToggle(this,gDrawer,R.string.openDrawer,R.string.closeDrawer);
+        gDrawer = findViewById(R.id.drawer_pet_upload);
+        gNavigation = findViewById(R.id.nav_view);
+        gToggle = new ActionBarDrawerToggle(this, gDrawer, R.string.openDrawer, R.string.closeDrawer);
         gDrawer.addDrawerListener(gToggle);
         gToggle.syncState();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButtonSaveRecord = findViewById(R.id.pet_upload);
-        PetPic = findViewById(R.id.pet_choose);
+        PetPic = findViewById(R.id.pet_chose);
         PetName = findViewById(R.id.pet_name);
-        PetOwner = findViewById(R.id.pet_owner);
         PetBreed = findViewById(R.id.pet_breed);
         PetAge = findViewById(R.id.pet_age);
         PetAddress = findViewById(R.id.pet_address);
-        mProgressBar = findViewById(R.id.pet_progress);
 
-        mStorageRef = FirebaseStorage.getInstance().getReference("pet_profile");
-        mDatabaseRef = FirebaseDatabase.getInstance().getReference("pet_profile");
+        mProgress = new ProgressDialog(this);
 
-        images = new ArrayList();
+        mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance().getReference().child("user_profile")
+                .child(mAuth.getCurrentUser().getUid());
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
 
-        PetPic.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ChosePetProfilePic();
-            }
-        });
+        mStorageRef = FirebaseStorage.getInstance().getReference();
+
+        String current_uid = mCurrentUser.getUid();
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference()
+                .child("user_profile").child(current_uid).child("pet_profile");
 
         ButtonSaveRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mUpload != null && mUpload.isInProgress()){
-                    Toast.makeText(Create_Pet.this,R.string.action_save_inprogress,Toast.LENGTH_SHORT).show();
-                } else {
-                    FieldCheck();
-                    uploadPet();
-                    Toast.makeText(Create_Pet.this,R.string.action_save_success,Toast.LENGTH_SHORT).show();
-                    startActivity(new Intent(Create_Pet.this,MyPet.class));
-                }
+                pet_upload();
+
+                intent = new Intent(Create_Pet.this, MyPet.class);
+                startActivity(intent);
             }
         });
 
-        requestMultiplePermissions();
+        PetPic.setOnClickListener(v -> openFileChooser());
+
         MyPetMenu();
+    }
+
+    private void openFileChooser() {
+        intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(intent, PET_IMAGE_REQUEST);
     }
 
     private void MyPetMenu() {
@@ -134,23 +145,39 @@ public class Create_Pet extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
                 gDrawer.closeDrawers();
-                int id= menuItem.getItemId();
+                int id = menuItem.getItemId();
 
-                switch (id){
+                switch (id) {
                     case R.id.home:
-                        intent=new Intent(Create_Pet.this,Home.class);
+                        intent = new Intent(Create_Pet.this, Home.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.account:
+                        intent = new Intent(Create_Pet.this, AccountSettings.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.mypet:
+                        intent = new Intent(Create_Pet.this, MyPet.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.message:
+                        intent = new Intent(Create_Pet.this, Messaging.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.lost:
+                        intent = new Intent(Create_Pet.this, Lost.class);
                         startActivity(intent);
                         break;
                     case R.id.settings:
-                        intent=new Intent(Create_Pet.this,Settings.class);
+                        intent = new Intent(Create_Pet.this, Settings.class);
                         startActivity(intent);
                         break;
                     case R.id.wophome:
-                        intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://worldofpaw.com"));
+                        intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://worldofpaw.com"));
                         startActivity(intent);
                         break;
                     case R.id.logout:
-                        intent=new Intent(Create_Pet.this,Loginn.class);
+                        intent = new Intent(Create_Pet.this, MainActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -159,199 +186,132 @@ public class Create_Pet extends AppCompatActivity {
         });
     }
 
-    private void FieldCheck(){
+    private void FieldCheck() {
         String name = PetName.getText().toString().trim();
-        String owner = PetOwner.getText().toString().trim();
         String breed = PetBreed.getText().toString().trim();
+        String age = PetAge.getText().toString().trim();
         String address = PetAddress.getText().toString().trim();
 
-        if(name.isEmpty()){
+        if (name.isEmpty()) {
             PetName.setError(getString(R.string.error_field_required));
             PetName.requestFocus();
             return;
         }
 
-        if (owner.isEmpty()){
-            PetOwner.setError(getString(R.string.error_field_required));
-            PetOwner.requestFocus();
-            return;
-        }
-
-        if(breed.isEmpty()){
+        if (breed.isEmpty()) {
             PetBreed.setError(getString(R.string.error_field_required));
             PetBreed.requestFocus();
             return;
         }
 
-        if (address.isEmpty()){
+        if (age.isEmpty()) {
+            PetAge.setError(getString(R.string.error_field_required));
+            PetAge.requestFocus();
+            return;
+        }
+
+        if (address.isEmpty()) {
             PetAddress.setError(getString(R.string.error_field_required));
             PetAddress.requestFocus();
             return;
         }
     }
 
-    public void ChosePetProfilePic() {
-        final Dialog dialog = new Dialog(this);
-        dialog.setContentView(R.layout.custom_dialog_box);
-        dialog.setTitle("Alert Dialog View");
-        dialog.findViewById(R.id.btnChoosePath)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        openFileChooser();
-                    }
-                });
-        dialog.findViewById(R.id.btnTakePhoto)
-                .setOnClickListener(new View.OnClickListener() {
-                    @Override public void onClick(View v) {
-                        activeTakePhoto();
-                    }
-                });
-
-        // show dialog on screen
-        dialog.show();
-    }
-
-    /**
-     * Take Photo
-    * */
-    private void activeTakePhoto() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            String fileName = "temp.jpg";
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.TITLE, fileName);
-            mImageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            intent.putExtra(MediaStore.EXTRA_OUTPUT, mImageUri);
-            startActivityForResult(intent, TAKE_PET_IMAGE_REQUEST);
-        }
-    }
-
-
-    /**
-     * Choose Picture
-     * */
-    private void openFileChooser(){
-        Intent intent = new Intent();
-        intent.setType("image/*");
-        intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Profile Image"), PICK_PET_IMAGE_REQUEST);
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        switch (requestCode) {
-            case PICK_PET_IMAGE_REQUEST:
-                if (requestCode == PICK_PET_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null){
-                    mImageUri = data.getData();
-                    Picasso.with(this).load(mImageUri).into(PetPic);
-                }
-                break;
-            case TAKE_PET_IMAGE_REQUEST:
-                if (requestCode == TAKE_PET_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
-                    mImageUri = data.getData();
-                    Picasso.with(this).load(mImageUri).into(PetPic);
-                }
-                break;
+        if (requestCode == PET_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            mPetImageUri = data.getData();
+            Picasso.get().load(mPetImageUri).placeholder(R.drawable.logo_wop).into(PetPic);
         }
-
     }
 
-    private String getFileExtension(Uri uri){
-        ContentResolver cR = getContentResolver();
-        MimeTypeMap mime = MimeTypeMap.getSingleton();
-        return  mime.getExtensionFromMimeType(cR.getType(uri));
+    private void pet_upload() {
+
+        FieldCheck();
+
+        if (mPetImageUri != null) {
+
+            final StorageReference petFileRef = mStorageRef.child("pet_profile").child(System.currentTimeMillis() + ".jpg");
+            petFileRef.putFile(mPetImageUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    Handler handler = new Handler();
+                    mProgress = new ProgressDialog(Create_Pet.this);
+                    mProgress.setTitle(getString(R.string.action_uploading_image));
+                    mProgress.setMessage(getString(R.string.action_uploading_message));
+                    mProgress.setCanceledOnTouchOutside(false);
+                    mProgress.show();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            mProgress.setProgress(0);
+                        }
+                    }, 5000);
+                    mProgress.dismiss();
+
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isComplete()) ;
+                    Uri downloadURL = uriTask.getResult();
+
+                    Pet pet = new Pet(downloadURL.toString(),
+                            "default",
+                            PetName.getText().toString().trim(),
+                            PetBreed.getText().toString().trim(),
+                            PetAge.getText().toString().trim(),
+                            PetAddress.getText().toString().trim(),
+                            "default",
+                            "default");
+                    String uploadID = mDatabaseRef.push().getKey();
+                    mDatabaseRef.child(uploadID).setValue(pet);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(Create_Pet.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+            }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100.0 * taskSnapshot.getBytesTransferred() / taskSnapshot.getTotalByteCount());
+                    mProgress.setProgress((int) progress);
+                }
+            });
+        } else {
+            Toast.makeText(this, "No File Selected", Toast.LENGTH_SHORT).show();
+        }
     }
 
-    private void uploadPet(){
-        mProgressBar.setVisibility(View.VISIBLE);
-        if (mImageUri != null){
-            StorageReference fileReference = mStorageRef.child(System.currentTimeMillis()+"."+getFileExtension(mImageUri));
-            mUpload = fileReference.putFile(mImageUri)
-                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                            Handler handler = new Handler();
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    mProgressBar.setProgress(0);
-                                }
-                            },5000);
-                            Pet petupload = new Pet(taskSnapshot.getMetadata().getReference().getDownloadUrl().toString(),
-                                    PetName.getText().toString().trim(),
-                                    PetOwner.getText().toString().trim(),
-                                    PetBreed.getText().toString().trim(),
-                                    Integer.parseInt(PetAge.getText().toString().trim()),
-                                    PetAddress.getText().toString()); //Constructor Java Class
-                            String uploadID = mDatabaseRef.push().getKey();
-                            mDatabaseRef.child(uploadID).setValue(petupload);
-                            Toast.makeText(Create_Pet.this,R.string.action_save_success,Toast.LENGTH_SHORT).show();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(Create_Pet.this,e.getMessage(),Toast.LENGTH_SHORT).show();
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    })
-                    .addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
-                        @Override
-                        public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
-                            double progress = (100.0*taskSnapshot.getBytesTransferred()/taskSnapshot.getTotalByteCount());
-                            mProgressBar.setProgress((int)progress);
-                            mProgressBar.setVisibility(View.GONE);
-                        }
-                    });
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            sendtoStart();
         }else {
-            Toast.makeText(this,R.string.error_no_image,Toast.LENGTH_SHORT).show();
+            mUserRef.child("online").setValue(true);
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private void  requestMultiplePermissions(){
-        Dexter.withActivity(this)
-                .withPermissions(
-                        Manifest.permission.CAMERA,
-                        Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                        Manifest.permission.READ_EXTERNAL_STORAGE)
-                .withListener(new MultiplePermissionsListener() {
-                    @Override
-                    public void onPermissionsChecked(MultiplePermissionsReport report) {
-                        // check if all permissions are granted
-                        if (report.areAllPermissionsGranted()) {
-                            Log.i("Permissions",getString(R.string.permission_succsess));
-                        }
-
-                        // check for permanent denial of any permission
-                        if (report.isAnyPermissionPermanentlyDenied()) {
-                            // show alert dialog navigating to Settings
-                            //openSettingsDialog();
-                        }
-                    }
-
-                    @Override
-                    public void onPermissionRationaleShouldBeShown(List<PermissionRequest> permissions, PermissionToken token) {
-                        token.continuePermissionRequest();
-                    }
-                }).
-                withErrorListener(new PermissionRequestErrorListener() {
-                    @Override
-                    public void onError(DexterError error) {
-                       Log.e("Error Permission: ","Some permission Error");
-                    }
-                })
-                .onSameThread()
-                .check();
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseUser currentuser = mAuth.getCurrentUser();
+        if (currentuser!=null){
+            mUserRef.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+        }
     }
 
+    private void sendtoStart() {
+        intent = new Intent(Create_Pet.this, MainActivity.class);
+        startActivity(intent);
+        fileList();
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (gToggle.onOptionsItemSelected(item)){
+        if (gToggle.onOptionsItemSelected(item)) {
             return true;
         }
         return super.onOptionsItemSelected(item);

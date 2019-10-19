@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundcolor"
+    tools:context=".MainActivity">
+
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/source"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerHorizontal="true">
+        <RelativeLayout
+            android:id="@+id/connection_relative"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/fui_bgAnonymous"
+            android:visibility="gone">
+            <ImageView
+                android:id="@+id/wifi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_wifi_black_24dp"
+                android:tint="@color/white"
+                android:layout_centerHorizontal="true"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No Internet"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:layout_below="@+id/wifi"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="3dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="128dp"
+                android:layout_height="128dp"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:contentDescription="@string/logo"
+                android:src="@drawable/logo_wop" />
+        </RelativeLayout>
+
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/google_login"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="?attr/buttoncolor"
+            android:visibility="gone"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <Button
+                android:id="@+id/sign_login"
+                android:layout_width="250dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="50dp"
+                android:text="@string/fui_sign_in_with_email"
+                android:background="@color/fui_transparent"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:drawableStart="@drawable/email_icon"
+                android:drawableTint="@color/white"
+                android:padding="5dp"/>
+
+            <TextView
+                android:id="@+id/already"
+                android:layout_marginTop="10dp"
+                android:layout_width="250dp"
+                android:textStyle="bold"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sign_login"
+                android:textColor="@color/white"
+                android:text="Already have an Account"/>
+            <Button
+                android:id="@+id/login_login"
+                android:layout_width="250dp"
+                android:layout_height="50dp"
+                android:layout_below="@id/already"
+                android:drawableStart="@drawable/login_icon"
+                android:drawableTint="@color/white"
+                android:padding="5dp"
+                android:textStyle="bold"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:background="@color/fui_transparent"
+                android:textColor="@color/white"
+                android:text="@string/login"/>
+        </RelativeLayout>
+
+
+    </LinearLayout>
+</RelativeLayout>

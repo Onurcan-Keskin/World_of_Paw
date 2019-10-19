@@ -1,0 +1,265 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundcolor"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:orientation="horizontal"
+        android:background="?attr/colorPrimary">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/back_btn"
+            android:layout_width="52dp"
+            android:layout_height="52dp"
+            android:layout_alignParentStart="true"
+            android:padding="10dp"
+            android:layout_centerVertical="true"
+            app:civ_border_width="2dp"
+            app:civ_border_color="@color/white"
+            android:src="@drawable/ic_arrow_back_white"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/prompt_nfc"
+            android:layout_toEndOf="@id/back_btn"
+            android:layout_centerVertical="true"
+            android:textColor="@color/white"
+            style="@style/Base.TextAppearance.AppCompat.Large"/>
+    </RelativeLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/white"/>
+
+    <TextView
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:text="@string/write_the_address_to_nfc_tag"
+        android:background="?attr/colorPrimary"
+        android:textColor="@color/white"
+        android:textStyle="bold"/>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        android:padding="5dp">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorPrimary"/>
+
+            <TextView
+                android:id="@+id/edit_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/card_background"
+                android:padding="5dp"
+                android:textColor="?attr/textcolor"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/edit_mail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/card_background"
+                android:padding="5dp"
+                android:textColor="?attr/textcolor"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/edit_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/card_background"
+                android:padding="5dp"
+                android:textColor="?attr/textcolor"
+                android:textSize="15sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorPrimary"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="?attr/colorPrimary"
+                android:padding="5dp"
+                android:text="@string/Label"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/pin_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="?attr/card_background"
+                android:hint="@string/Label"
+                android:inputType="text"
+                android:padding="5dp"
+                android:textAllCaps="false"
+                android:textColor="?attr/tintcolor"
+                android:textColorHint="?attr/textcolor"
+                android:textSize="20sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="?attr/colorPrimary"
+                android:padding="5dp"
+                android:text="@string/m_latitude"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/latitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/card_background"
+                    android:hint="@string/latitude"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/tintcolor"
+                    android:textColorHint="?attr/textcolor"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:background="?attr/colorPrimary"
+                android:padding="5dp"
+                android:text="@string/m_longitude"
+                android:textColor="@color/white"
+                android:textSize="20sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <EditText
+                    android:id="@+id/longitude"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="?attr/card_background"
+                    android:hint="@string/longitude"
+                    android:inputType="text"
+                    android:padding="5dp"
+                    android:textAllCaps="false"
+                    android:textColor="?attr/tintcolor"
+                    android:textColorHint="?attr/textcolor"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="128dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingEnd="10dp"
+                android:paddingStart="10dp">
+
+                <Button
+                    android:id="@+id/loc_marker"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:background="?attr/buttoncolor"
+                    android:drawableTop="@drawable/location_marker"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:text="@string/get_my_current_location"
+                    android:textAllCaps="true"
+                    android:textColor="?attr/tintcolor"
+                    android:textStyle="bold"
+                    tools:ignore="UnusedAttribute" />
+
+                <Button
+                    android:id="@+id/button"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="?attr/buttoncolor"
+                    android:drawableTop="@drawable/nfc"
+                    android:drawableTint="?attr/colorPrimary"
+                    android:text="@string/write"
+                    android:textAllCaps="true"
+                    android:textColor="?attr/tintcolor"
+                    android:textStyle="bold"
+                    tools:ignore="UnusedAttribute" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:background="?attr/card_background"
+        android:orientation="vertical"
+        android:padding="5dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:background="?attr/colorPrimary"
+                android:padding="10dp"
+                android:text="@string/message_nfc_contents"
+                android:textStyle="bold"
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/nfc_contents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="55dp"
+                android:background="?attr/card_background"
+                android:padding="10dp"
+                android:paddingTop="5dp"
+                android:textColor="?attr/tintcolor"
+                android:textSize="20sp"
+                android:drawableStart="@drawable/globe_icon"
+                android:drawableTint="?attr/colorPrimary"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</LinearLayout>

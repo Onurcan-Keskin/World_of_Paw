@@ -1,28 +1,34 @@
 package com.example.wop;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.drawerlayout.widget.DrawerLayout;
+import android.content.Context;
+import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
+import com.example.wop.Model.User;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.storage.FileDownloadTask;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.widget.ImageView;
-import android.widget.Toast;
-
-import java.io.File;
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 public class Home extends AppCompatActivity {
 
@@ -31,14 +37,27 @@ public class Home extends AppCompatActivity {
     private ActionBarDrawerToggle gToggle;
     private Intent intent;
 
-    ImageView user_image;
     Uri uriProfileImage;
-    String profileImageUrl;
-    FirebaseAuth mAuth;
+
+    private ImageView hImageView;
+
+    private DatabaseReference mDatabaseRef;
+    private FirebaseAuth mAuth;
+    private DatabaseReference mUserRef;
+    private FirebaseUser mCurrentUser;
+    private StorageReference mStorageRef;
+    private ConnectivityManagern c;
+    User mUsers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.dark_theme);
+        }else setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle(R.string.nav_home);
         setContentView(R.layout.activity_home);
 
         gDrawer=(DrawerLayout) findViewById(R.id.drawer_home);
@@ -48,8 +67,56 @@ public class Home extends AppCompatActivity {
         gToggle.syncState();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        user_image=(ImageView) findViewById(R.id.user_pic);
         mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance().getReference().child("user_profile")
+                .child(mAuth.getCurrentUser().getUid());
+
+        /*Header*/
+        hImageView= findViewById(R.id.header_user_pic);
+
+        mCurrentUser = FirebaseAuth.getInstance().getCurrentUser();
+        String current_uid = mCurrentUser.getUid();
+
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("user_profile").child(current_uid);
+        mDatabaseRef.keepSynced(true);
+
+        /*if (mAuth.getCurrentUser()!=null){
+            mUserRef = FirebaseDatabase.getInstance().getReference()
+                    .child("user_profile")
+                    .child(mAuth.getCurrentUser().getUid());
+        }*/
+
+        /*
+        mDatabaseRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                final String image = dataSnapshot.child("image").getValue().toString();
+
+
+                if (!image.equals("default")) {
+                    //Picasso.get().load(image).placeholder(R.drawable.wop_new).into(mImage);
+                    Picasso.get().load(image).networkPolicy(NetworkPolicy.OFFLINE)
+                            .placeholder(R.drawable.wop_new)
+                            .into(hImageView, new Callback() {
+                                @Override
+                                public void onSuccess() {
+
+                                }
+
+                                @Override
+                                public void onError(Exception e) {
+                                    Picasso.get().load(image).placeholder(R.drawable.wop_new).into(hImageView);
+                                }
+                            });
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Toast.makeText(Home.this,databaseError.getMessage().toString(),Toast.LENGTH_SHORT).show();
+            }
+        });*/
 
         MyHomeMenu();
     }
@@ -62,8 +129,20 @@ public class Home extends AppCompatActivity {
                 int id= menuItem.getItemId();
 
                 switch (id){
+                    case R.id.account:
+                        intent=new Intent(Home.this,AccountSettings.class);
+                        startActivity(intent);
+                        break;
                     case R.id.mypet:
                         intent=new Intent(Home.this,MyPet.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.message:
+                        intent=new Intent(Home.this,Messaging.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.lost:
+                        intent = new Intent(Home.this, Lost.class);
                         startActivity(intent);
                         break;
                     case R.id.settings:
@@ -75,7 +154,9 @@ public class Home extends AppCompatActivity {
                         startActivity(intent);
                         break;
                     case R.id.logout:
-                        intent=new Intent(Home.this,Loginn.class);
+                        FirebaseAuth.getInstance().signOut();
+                        mAuth.signOut();
+                        intent=new Intent(Home.this,MainActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -105,10 +186,44 @@ public class Home extends AppCompatActivity {
     }
 
     @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK) {
+            intent = new Intent(this, Home.class);
+            startActivity(intent);
+        }
+        return false;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (gToggle.onOptionsItemSelected(item)){
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            sendtoStart();
+        }else {
+            mUserRef.child("online").setValue(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mCurrentUser != null){
+            mUserRef.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+        }
+    }
+
+    private void sendtoStart() {
+        intent = new Intent(Home.this, MainActivity.class);
+        startActivity(intent);
+        fileList();
     }
 }

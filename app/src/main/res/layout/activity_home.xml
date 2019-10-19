@@ -7,14 +7,20 @@
     tools:context=".Home"
     android:id="@+id/drawer_home">
 
+    <pl.droidsonroids.gif.GifImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/rain"/>
+
     <com.google.android.material.navigation.NavigationView
-        app:menu="@menu/drawermenu"
-        app:headerLayout="@layout/header"
         android:id="@+id/nav_view"
-        android:background="#949494"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"/>
+        android:background="?attr/backgroundcolor"
+        app:itemTextColor="?attr/buttontextcolor"
+        android:fitsSystemWindows="true"
+        app:headerLayout="@layout/header"
+        app:menu="@menu/drawermenu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

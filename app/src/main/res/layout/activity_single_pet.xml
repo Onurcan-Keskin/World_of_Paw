@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Single_Pet"
+    android:orientation="vertical"
+    android:background="?attr/backgroundcolor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:id="@+id/r1"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:background="?attr/colorPrimary"
+            android:orientation="horizontal">
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/back_btn"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/ic_arrow_back_white"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <de.hdodenhof.circleimageview.CircleImageView
+                android:id="@+id/prof_pet_image"
+                android:layout_width="52dp"
+                android:layout_height="52dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/back_btn"
+                android:src="@drawable/logo_wop"
+                app:civ_border_color="@color/white"
+                app:civ_border_width="2dp" />
+
+            <TextView
+                android:id="@+id/prof_pet_name"
+                style="@style/TextAppearance.AppCompat.Medium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@+id/prof_pet_image"
+                android:text="@string/prompt_pet_name"
+                android:textColor="@color/white"
+                android:textStyle="bold" />
+
+
+            <RelativeLayout
+                android:id="@+id/lost_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/prof_pet_name"
+                android:layout_marginStart="110dp"
+                android:padding="5dp">
+
+                <ImageView
+                    android:layout_centerHorizontal="true"
+                    android:layout_width="64dp"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@+id/is"
+                    android:layout_alignParentTop="true"
+                    android:src="@drawable/lost_icon"
+                    android:tint="@color/white" />
+                <TextView
+                    android:id="@+id/is"
+                    android:gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerVertical="true"
+                    android:text="Is your Pet Lost?"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/white" />
+    </LinearLayout>
+
+    <ScrollView
+        android:id="@+id/single_pet_form"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="20dp"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingStart="10dp"
+            android:paddingEnd="@dimen/activity_horizontal_margin">
+
+            <LinearLayout
+                android:id="@+id/pet_image_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/pet_circle_image"
+                        android:layout_width="240dp"
+                        android:layout_height="240dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:contentDescription="@string/user_profile"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/logo_wop" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignEnd="@+id/pet_circle_image"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="-30dp"
+                        android:contentDescription="@string/camera_icon"
+                        android:src="@drawable/ic_camera_black_24dp"
+                        android:tint="?attr/icon_color" />
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pet_name_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                app:cardBackgroundColor="?attr/card_background"
+                android:layout_marginTop="10dp"
+                app:cardCornerRadius="20dp">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="20dp"
+                    android:src="@drawable/pet_icon"
+                    android:tint="?attr/colorPrimary"
+                    android:contentDescription="@string/profile_icon"
+                    android:layout_marginStart="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:padding="5dp">
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/prompt_pet_name"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginLeft="70dp"
+                            android:textColor="?attr/textcolor"
+                            android:layout_marginStart="70dp" />
+                        <TextView
+                            android:id="@+id/pet_name_text"
+                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="?attr/textcolor"
+                            android:text="@string/prompt_pet_name"
+                            android:textStyle="bold"
+                            android:layout_marginStart="70dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_pet_name"
+                            android:layout_marginTop="10dp"
+                            android:textColor="?attr/textcolor" />
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_create_black_24dp"
+                            android:tint="?attr/colorPrimary"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/create" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pet_breed_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="?attr/card_background"
+                android:orientation="horizontal"
+                app:cardCornerRadius="20dp">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/pet_breed_icon"
+                    android:layout_marginTop="10dp"
+                    android:tint="?attr/colorPrimary"
+                    android:contentDescription="@string/about_icon"
+                    android:layout_marginStart="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:weightSum="2">
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/textcolor"
+                            android:text="@string/prompt_pet_breed"
+                            android:layout_marginStart="70dp" />
+                        <TextView
+                            android:id="@+id/pet_breed_text"
+                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="?attr/textcolor"
+                            android:text="@string/prompt_pet_breed"
+                            android:layout_marginStart="70dp"
+                            android:layout_marginBottom="5dp"/>
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_create_black_24dp"
+                            android:tint="?attr/colorPrimary"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/create" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pet_age_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="?attr/card_background"
+                android:orientation="horizontal"
+                app:cardCornerRadius="20dp">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/pet_age_icon"
+                    android:tint="?attr/colorPrimary"
+                    android:layout_marginTop="10dp"
+                    android:contentDescription="@string/about_icon"
+                    android:layout_marginStart="5dp" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:weightSum="2">
+
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="match_parent"
+                        android:padding="5dp"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="70dp"
+                            android:text="@string/prompt_pet_age"
+                            android:textColor="?attr/textcolor" />
+                        <TextView
+                            android:id="@+id/pet_age_text"
+                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="70dp"
+                            android:layout_marginTop="5dp"
+                            android:text="@string/prompt_pet_age"
+                            android:textColor="?attr/textcolor"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="5dp"/>
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_create_black_24dp"
+                            android:tint="?attr/colorPrimary"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/create" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/pet_address_layout"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="?attr/card_background"
+                android:orientation="horizontal"
+                app:cardCornerRadius="20dp">
+                <ImageView
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:src="@drawable/pet_addess_icon"
+                    android:layout_marginTop="10dp"
+                    android:tint="?attr/colorPrimary"
+                    android:contentDescription="@string/about_icon"
+                    android:layout_marginStart="5dp" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"
+                    android:padding="5dp"
+                    android:weightSum="2">
+                    <LinearLayout
+                        android:layout_width="320dp"
+                        android:layout_height="match_parent"
+                        android:orientation="vertical"
+                        android:padding="5dp"
+                        android:layout_weight="1">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textColor="?attr/textcolor"
+                            android:text="@string/prompt_pet_address"
+                            android:layout_marginStart="70dp" />
+                        <TextView
+                            android:id="@+id/pet_address_text"
+                            style="@style/Base.TextAppearance.AppCompat.Medium"
+                            android:textStyle="bold"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:textColor="?attr/textcolor"
+                            android:text="@string/prompt_pet_address"
+                            android:layout_marginStart="70dp"
+                            android:layout_marginBottom="5dp"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/description_address"
+                            android:layout_marginTop="10dp"
+                            android:textColor="?attr/textcolor"/>
+                    </LinearLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_create_black_24dp"
+                            android:tint="?attr/colorPrimary"
+                            android:layout_centerVertical="true"
+                            android:layout_centerHorizontal="true"
+                            android:contentDescription="@string/create" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

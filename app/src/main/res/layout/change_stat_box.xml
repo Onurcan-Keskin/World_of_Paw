@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:padding="5dp"
+    android:layout_height="match_parent"
+    android:background="?attr/backgroundcolor">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="10dp"
+        app:cardBackgroundColor="?attr/card_background">
+        <TextView
+            android:text="@string/prompt_add_about"
+            android:layout_width="wrap_content"
+            style="@style/Base.TextAppearance.AppCompat.Medium"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/tintcolor"
+            android:textStyle="bold"
+            android:padding="5dp"/>
+        <EditText
+            android:id="@+id/stat_box"
+            android:layout_marginTop="30dp"
+            android:hint="@string/prompt_about"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="?attr/tintcolor"
+            android:background="?attr/card_background"
+            android:textColorHint="?attr/textcolor"
+            android:padding="5dp"
+            android:textStyle="normal"
+            android:inputType="text"
+            android:maxLines="1"/>
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        android:weightSum="1">
+
+        <Button
+            android:id="@+id/stat_cancel"
+            style="?android:attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="100dp"
+            android:background="?attr/buttoncolor"
+            android:text="@string/prompt_cancel"
+            android:textColor="?attr/buttontextcolor" />
+
+        <Button
+            android:id="@+id/stat_save"
+            style="?android:attr/buttonStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="0dp"
+            android:layout_marginEnd="0dp"
+            android:background="?attr/buttoncolor"
+            android:text="@string/action_save"
+            android:textColor="?attr/buttontextcolor" />
+    </RelativeLayout>
+
+</LinearLayout>

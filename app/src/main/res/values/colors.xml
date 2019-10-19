@@ -11,6 +11,35 @@
     <color name="deepPurple5">#D1C4E9</color>
     <color name="black">#000</color>
     <color name="white">#fff</color>
+    <color name="gray">#D5D2D2</color>
+
+    <color name="icon_blue">#3F51B5</color>
+    <color name="icon_darkblue">#2C3A86</color>
+    <color name="accent">#C41953</color>
+    <color name="creme">#F3F3F3</color>
+
+    <color name="lbackgroundcolor">#E8E8E8</color>
+    <color name="lcard_background">#fff</color>
+    <color name="ltextcolor">#808080</color>
+    <color name="ltintcolor">#000000</color>
+    <color name="lbuttontextcolor">#3F51B5</color>
+    <color name="lbuttoncolor">#F3F3F3</color>
+    <color name="licon_color">@color/icon_blue</color>
+    <color name="ldrawercolor">@color/icon_darkblue</color>
+
+    <color name="placeholder">#2eb787</color>
+
+    <color name="ublox_blue_color">#005595</color>
+    <color name="list_title_color">#666666</color>
+    <color name="chat_name_color">#BBBBBB</color>
+
+    <color name="dcolorPrimary">#E65100</color>
+    <color name="dcolorPrimaryDark">#090909</color>
+    <color name="dcolorAccent">@color/accent</color>
+    <color name="dbackgroundcolor">#303030</color>
+    <color name="dcard_background">#424242</color>
+    <color name="dtextcolor">@color/white</color>
+    <color name="dtintcolor">@color/white</color>
 
     <!-- Buttons -->
     <color name="btnSignUp">#39796b</color>

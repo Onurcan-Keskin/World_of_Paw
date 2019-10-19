@@ -2,94 +2,119 @@ package com.example.wop;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.app.LoaderManager;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.ContactsContract;
 import android.util.DisplayMetrics;
 import android.util.Patterns;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.wop.Model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseAuthException;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.Locale;
 import java.util.regex.Pattern;
 
+import static android.view.KeyEvent.KEYCODE_BACK;
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 public class Loginn extends AppCompatActivity implements View.OnClickListener{
 
     FirebaseAuth myAuth;
+
+    private boolean doubleBackToExit = false;
 
     private AutoCompleteTextView mEmailView;
     private ProgressBar progressBar;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-     Button btnSignIn;
-     Button btnSignUp;
-     Button btn_tr;
-     Button brn_en;
 
+    private ProgressBar l_progress;
     private EditText edpass;
     private EditText edmail;
+    private Intent intent;
 
-    private Locale mylocale;
+    private DatabaseReference mDatabaseRef;
+
+    float x1, x2,y1,y2;
+
+    private ProgressDialog mProgress;
+
+    private boolean doubleBackToExitPressedOnce;
+    private Handler mHandler = new Handler();
+
     private String currentlang="en", getCurrentlang;
+    int onStartCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loginn);
+        setContentView(R.layout.activity_login);
 
-        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
-        findViewById(R.id.email_sign_up_button).setOnClickListener(this);
-        edpass = (EditText) findViewById(R.id.edtpassword);
-        edmail = (EditText) findViewById(R.id.edtemail);
 
-        progressBar = (ProgressBar) findViewById(R.id.login_progress);
+        //findViewById(R.id.email_sign_in_button).setOnClickListener(this);
+        //findViewById(R.id.email_sign_up_button).setOnClickListener(this);
+        edpass = findViewById(R.id.edtpassword);
+        edmail = findViewById(R.id.edtemail);
+        l_progress = findViewById(R.id.login_progress);
+        onStartCount = 1;
+
         myAuth = FirebaseAuth.getInstance();
 
         currentlang=getIntent().getStringExtra(currentlang);
 
-        findViewById(R.id.tr_flag).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setLocale("tr");
-            }
-        });
+        mProgress = new ProgressDialog(this);
+        mDatabaseRef = FirebaseDatabase.getInstance().getReference().child("user_profile");
 
-        findViewById(R.id.en_flag).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setLocale("en");
-            }
-        });
+        findViewById(R.id.email_sign_in_button).setOnClickListener(this);
+
+        findViewById(R.id.lng_tr).setOnClickListener(v -> setLocale("tr"));
+
+        findViewById(R.id.lng_en).setOnClickListener(v -> setLocale("en"));
     }
 
     public void setLocale(String localeName){
         if (!localeName.equals(currentlang)){
-            mylocale = new Locale(localeName);
+            Locale mylocale = new Locale(localeName);
             Resources res = getResources();
             DisplayMetrics dm = res.getDisplayMetrics();
             Configuration config = res.getConfiguration();
@@ -131,47 +156,122 @@ public class Loginn extends AppCompatActivity implements View.OnClickListener{
             return;
         }
 
-        progressBar.setVisibility(View.VISIBLE);
-        myAuth.signInWithEmailAndPassword(email,pass).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+        myAuth.signInWithEmailAndPassword(email,pass).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
             @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                progressBar.setVisibility(View.GONE);
-                if (task.isSuccessful()){
-                    finish();
-                    Intent intent = new Intent(Loginn.this,Home.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                    startActivity(intent);
-                } else {
-                    Toast.makeText(getApplicationContext(),task.getException().getMessage(),Toast.LENGTH_SHORT).show();
-                }
+            public void onSuccess(AuthResult authResult) {
+                finish();
+
+                final String uid = myAuth.getCurrentUser().getUid();
+                //final Task<InstanceIdResult> deviceToken = FirebaseInstanceId.getInstance().getInstanceId();
+                FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(new OnSuccessListener<InstanceIdResult>() {
+                    @Override
+                    public void onSuccess(InstanceIdResult instanceIdResult) {
+                        String tokenId = instanceIdResult.getToken();
+                        mDatabaseRef.child(uid).child("tokenID").setValue(tokenId).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                Intent intent = new Intent(Loginn.this,Home.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                });
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Toast.makeText(Loginn.this,R.string.error_global_login,Toast.LENGTH_SHORT).show();
             }
         });
     }
 
+    private final Runnable mRunnable = new Runnable() {
+        @Override
+        public void run() {
+            doubleBackToExitPressedOnce = false;
+        }
+    };
+
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode==KeyEvent.KEYCODE_BACK)
-            Toast.makeText(getApplicationContext(),R.string.error_back_button,Toast.LENGTH_SHORT).show();
-        return false;
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (mHandler != null) { mHandler.removeCallbacks(mRunnable); }
     }
 
     /*
     @Override
+    public void onBackPressed() {
+        if (doubleBackToExitPressedOnce) {
+            super.onBackPressed();
+            return;
+        }
+        this.doubleBackToExitPressedOnce = true;
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show();
+        mHandler.postDelayed(mRunnable, 2000);
+    }*/
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode==KeyEvent.KEYCODE_BACK) {
+            intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        return false;
+    }
+
+    public boolean onTouchEvent(MotionEvent touchevent) {
+        switch (touchevent.getAction()) {
+            case MotionEvent.ACTION_DOWN: {
+                x1 = touchevent.getX();
+                y1 = touchevent.getY();
+                break;
+            }
+            case MotionEvent.ACTION_UP: {
+                x2 = touchevent.getX();
+                y2 = touchevent.getY();
+                if (x1 < x2) {
+                    Intent intent = new Intent(Loginn.this, SignUp.class);
+                    startActivity(intent);
+                }
+                if (x1 > x2) {
+                    Intent intent = new Intent(Loginn.this, SignUp.class);
+                    startActivity(intent);
+                }
+            }
+            break;
+        }
+        return false;
+    }
+
+    private void updateUI(FirebaseUser user){
+        if (user != null){
+
+        }
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
-        if (myAuth.getCurrentUser() != null){
-            finish();
-            startActivity(new Intent(this,ProfileAct.class));
+        FirebaseUser currentUser = myAuth.getCurrentUser();
+        updateUI(currentUser);
+        if (onStartCount>1){
+            this.overridePendingTransition(R.anim.anim_slide_in_right,R.anim.anim_slide_out_right);
+        }else if (onStartCount==1){
+            onStartCount++;
         }
-    }*/
+    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.email_sign_up_button:
+            /*case R.id.email_sign_up_button:
                 finish();
-                startActivity(new Intent(this, SignUp.class));
-                break;
+                startActivity(new Intent(Loginn.this, SignUp.class));
+                break;*/
 
             case R.id.email_sign_in_button:
                 userlogin();

@@ -3,6 +3,7 @@ package com.example.wop;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.content.Intent;
@@ -16,14 +17,22 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CompoundButton;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 public class Settings extends AppCompatActivity {
 
@@ -32,13 +41,23 @@ public class Settings extends AppCompatActivity {
     private ActionBarDrawerToggle gToggle;
     private Intent intent;
 
-    private Spinner spinner;
+
     private Locale mylocale;
     private String currentlang="en", getCurrentlang;
+    private Switch dayNight;
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference mUserRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            setTheme(R.style.dark_theme);
+        }else setTheme(R.style.AppTheme);
+
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setTitle(getText(R.string.nav_settings));
         setContentView(R.layout.activity_settings);
 
         gDrawer=(DrawerLayout) findViewById(R.id.drawer_settings);
@@ -48,42 +67,38 @@ public class Settings extends AppCompatActivity {
         gToggle.syncState();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        MySettings();
+        mAuth = FirebaseAuth.getInstance();
+        mUserRef = FirebaseDatabase.getInstance().getReference().child("user_profile")
+                .child(mAuth.getCurrentUser().getUid());
 
-        /* Language Selector Test */
-
-        currentlang=getIntent().getStringExtra(currentlang);
-        spinner=(Spinner) findViewById(R.id.lang_select_spinner);
-
-        List<String> list=new ArrayList<String>();
-
-        list.add("-------");
-        list.add("English");
-        list.add("Turkish");
-
-        ArrayAdapter<String> adapter=new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,list);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        dayNight = findViewById(R.id.switch_day_night);
+        if (AppCompatDelegate.getDefaultNightMode()==AppCompatDelegate.MODE_NIGHT_YES){
+            dayNight.setChecked(true);
+        }dayNight.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                switch (position){
-                    case 0:
-                        break;
-                    case 1:
-                        setLocale("en");
-                        break;
-                    case 2:
-                        setLocale("tr");
-                        break;
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked){
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                    restartApp();
+                }else {
+                    AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                    restartApp();
                 }
             }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
         });
+
+        findViewById(R.id.lng_tr).setOnClickListener(v -> setLocale("tr"));
+
+        findViewById(R.id.lng_en).setOnClickListener(v -> setLocale("en"));
+
+        MySettings();
+
+    }
+
+    public void restartApp(){
+        Intent intent = new Intent(getApplicationContext(),Settings.class);
+        startActivity(intent);
+        finish();
     }
 
     private void MySettings() {
@@ -98,15 +113,29 @@ public class Settings extends AppCompatActivity {
                         intent=new Intent(Settings.this,Home.class);
                         startActivity(intent);
                         break;
+                    case R.id.account:
+                        intent=new Intent(Settings.this,AccountSettings.class);
+                        startActivity(intent);
+                        break;
                     case R.id.mypet:
                         intent=new Intent(Settings.this,MyPet.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.message:
+                        intent=new Intent(Settings.this,Messaging.class);
+                        startActivity(intent);
+                        break;
+                    case R.id.lost:
+                        intent=new Intent(Settings.this,Lost.class);
                         startActivity(intent);
                         break;
                     case R.id.wophome:
                         intent=new Intent(Intent.ACTION_VIEW, Uri.parse("https://worldofpaw.com"));
                         startActivity(intent);
                     case R.id.logout:
-                        intent=new Intent(Settings.this,Loginn.class);
+                        FirebaseAuth.getInstance().signOut();
+                        mAuth.signOut();
+                        intent=new Intent(Settings.this,MainActivity.class);
                         startActivity(intent);
                         break;
                 }
@@ -117,7 +146,7 @@ public class Settings extends AppCompatActivity {
 
     public void setLocale(String localeName){
         if (!localeName.equals(currentlang)){
-            mylocale = new Locale(localeName);
+            Locale mylocale = new Locale(localeName);
             Resources res = getResources();
             DisplayMetrics dm = res.getDisplayMetrics();
             Configuration config = res.getConfiguration();
@@ -127,8 +156,34 @@ public class Settings extends AppCompatActivity {
             refresh.putExtra(currentlang,localeName);
             startActivity(refresh);
         } else {
-            Toast.makeText(Settings.this,"Language is already selected",Toast.LENGTH_SHORT).show();
+            Toast.makeText(Settings.this,R.string.error_lang_selected,Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if (currentUser == null){
+            sendtoStart();
+        }else {
+            mUserRef.child("online").setValue(true);
+        }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        FirebaseUser currentuser = mAuth.getCurrentUser();
+        if (currentuser!=null){
+            mUserRef.child("online").onDisconnect().setValue(ServerValue.TIMESTAMP);
+        }
+    }
+
+    private void sendtoStart() {
+        intent = new Intent(Settings.this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     /*
