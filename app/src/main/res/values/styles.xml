@@ -21,24 +21,24 @@
     <!-- BLE-Theme -->
     <style name="ble_theme" parent="android:Theme.Holo.Light">
         <!-- Customize your theme here. -->
-        <item name="android:actionBarStyle">@style/UBLOXActionBar</item>
-        <item name="android:actionBarTabStyle">@style/UBLOXActionBarTabs</item>
-        <item name="android:actionBarTabTextStyle">@style/UBLOXActionBarTabsText</item>
+        <item name="android:actionBarStyle">@style/WOPActionBar</item>
+        <item name="android:actionBarTabStyle">@style/WOPActionBarTabs</item>
+        <item name="android:actionBarTabTextStyle">@style/WOPActionBarTabsText</item>
     </style>
 
     <!-- ActionBar styles -->
-    <style name="UBLOXActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
+    <style name="WOPActionBar" parent="@android:style/Widget.Holo.Light.ActionBar.Solid">
         <item name="android:background">@color/white</item>
         <item name="android:backgroundStacked">@color/dcolorPrimary</item>
     </style>
 
     <!-- ActionBar tabs styles -->
-    <style name="UBLOXActionBarTabs" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
+    <style name="WOPActionBarTabs" parent="@android:style/Widget.Holo.Light.ActionBar.TabView">
         <!-- tab indicator -->
         <item name="android:background">@drawable/actionbar_tab_indicator</item>
     </style>
 
-    <style name="UBLOXActionBarTabsText" parent="@android:style/Widget.Holo.Light.ActionBar.TabText">
+    <style name="WOPActionBarTabsText" parent="@android:style/Widget.Holo.Light.ActionBar.TabText">
         <item name="android:textColor">@color/white</item>
     </style>
     <!-- End BLE -->
