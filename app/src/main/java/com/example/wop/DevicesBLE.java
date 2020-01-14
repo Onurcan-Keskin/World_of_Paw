@@ -7,7 +7,6 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothGatt;
 import android.bluetooth.BluetoothManager;
 import android.bluetooth.le.BluetoothLeScanner;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -29,9 +28,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.wop.BLE_Model.BluetoothDeviceRepresentation;
-import com.example.wop.BLE_Model.UBloxDevice;
+import com.example.wop.BLE_Model.WoPDevice;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -354,7 +352,7 @@ public class DevicesBLE extends Activity implements AdapterView.OnItemClickListe
 
                 @Override
                 public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-                    runOnUiThread(() -> mLeDeviceListAdapter.addDevice(new UBloxDevice(device), rssi));
+                    runOnUiThread(() -> mLeDeviceListAdapter.addDevice(new WoPDevice(device), rssi));
                 }
             };
 

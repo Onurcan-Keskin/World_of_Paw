@@ -64,7 +64,7 @@ public class ServerManager {
             new BluetoothAdapter.LeScanCallback() {
                 @Override
                 public void onLeScan(final BluetoothDevice device, final int rssi, byte[] scanRecord) {
-                    devices.add(new UBloxDevice(device));
+                    devices.add(new WoPDevice(device));
                 }
             };
 

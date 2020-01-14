@@ -10,10 +10,10 @@ import java.util.List;
 
 import androidx.annotation.RequiresApi;
 
-public class UBloxGatt implements BluetoothGattRepresentation {
+public class WoPGatt implements BluetoothGattRepresentation {
     private BluetoothGatt gatt;
 
-    public UBloxGatt(BluetoothGatt gatt) {
+    public WoPGatt(BluetoothGatt gatt) {
         this.gatt = gatt;
     }
 

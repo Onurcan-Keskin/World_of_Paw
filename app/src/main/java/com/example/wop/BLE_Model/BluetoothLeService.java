@@ -306,7 +306,7 @@ public class BluetoothLeService extends Service {
         if (rawDevice == null) {
             return false;
         }
-        BluetoothDeviceRepresentation device = new UBloxDevice(rawDevice);*/
+        BluetoothDeviceRepresentation device = new WoPDevice(rawDevice);*/
 
         // We want to directly connect to the device, so we are setting the autoConnect
         // parameter to false.
